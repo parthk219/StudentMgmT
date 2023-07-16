@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        //wrong in bracket after {}  {} was left
+        $("#btns").click(function () {
+            var n = $("#txtname").val();   //# was left !!
+            var m = $("#txtmob").val();
+            var em = $("#txtemail").val();
+            var d = $("#txtdob").val();
+            //alert("OK")
+
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/InsertRecord",
+                data: 'name=' + n + '&mob=' + m + '&email=' + em + '&dob=' + d,
+               success:function(data) {
+                    alert("RECORD SAVED")
+                    $("#txtname").val("");   // = null so that value will be reset
+                    $("#txtmob").val("") ;
+                    $("#txtemail").val("");
+                    $("#txtdob").val("");
+
+                },
+                error: function () {
+                    alert("Something went wrong");
+                }
+                
+         //$("#txtname").val() = "";   // = null so that value will be reset
+         //       $("#txtmob").val() = "";
+         //       $("#txtemail").val() = "";
+         //       $("#txtdob").val() = "";
+
+
+            })
+        })
+    })
+</script>
+
+
+
+
+<div class="text-center">
+    <h1 class="display-4">Student Management</h1>
+    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+</div>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4" style="border: 5px solid lightgreen;" >
+                Name
+                <input type="text" id="txtname" class="form-control" />
+                Mobile Number
+                <input type="number" id="txtmob" class="form-control" />
+                E-mail
+                <input type="text" id="txtemail" class="form-control" />
+                Date of Birth
+                <input type="date" id="txtdob" class="form-control" />
+                <br /><br />
+                <button class="btn btn-success" id="btns">Save record</button>
+                <a href="/Home/display" class="btn btn-danger">Display Record</a>
+            </div>
+        </div>
+        </div>
+</body>
+
+
+

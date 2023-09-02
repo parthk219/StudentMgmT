@@ -32,7 +32,7 @@
                     //var tab = "<table class='table table-responsive'><tr><th>Name</th><th>Mobile</th><th>Email</th><th>DOB</th><th>EDIT</th><th>DELETE</th><th>";
                     for (var i = 0; i < data.length; i++) {
                         //tab = tab + "<tr><td>" + (i + 1) + "</td><td>" + data[i].name + "</td><td>" + data[i].mob + "</td><td>" + data[i].name + "</td><td>" + data[i].email + "</td><td>" + data[i].dob + "</td><td><span class='fa fa-trash spd' style='color:red;font-size:22px'></span></td><td><span class='fa fa-edit spd' style='color:red;font-size:22px'></span></td></tr>"  /*spd class to edit or delete*/
-                        tab = tab + "<tr><td>" + (i + 1) + "</td><td>" + data[i].name + "</td><td>" + data[i].mob + "</td><td>" +  data[i].email + "</td><td>" + data[i].dob + "</td><td><span class='fa fa-trash spd' style='color:red;font-size:22px'></span></td><td><span class='fa fa-edit spd' style='color:red;font-size:22px'></span></td></tr>"  /*spd class to edit or delete*/
+                        tab = tab + "<tr><td>" + (i + 1) + "</td><td>" + data[i].name + "</td><td>" + data[i].mob + "</td><td>" + data[i].email + "</td><td>" + data[i].dob + "</td><td><span class='fa fa-trash spd' style='color:red;font-size:22px'></span></td><td><span class='fa fa-edit spd' style='color:red;font-size:22px'></span></td></tr>"  /*spd class to edit or delete*/
 
                     }
 
@@ -40,29 +40,35 @@
 
                     $('#dd').html(tab);
 
-
-                    //alert(data[0].name)
-
                 },
                 error: function () {
-                    alert("Something went wrong")
+                    alert("Something went wrong");
                 }
-            })
+            });
             //click event of table
-            $("myTable").on("click", ".spd", function () {
+            $("#myTable").on("click", ".spd", function () {
                 //get current row
-                var cRow = $(this).closet("tr");
+                var cRow = $(this).closest("tr");
                 cRow.find("td:eq(5)").click(function () {
                     alert("deleted")
                 })
             });
 
         });
+            //$("#myTable").on("click", ".spd", function () {
+            //    // Get current row
+            //    var cRow = $(this).closest("tr");
+            //    // Now you can perform operations on the current row
+            //    cRow.find("td:eq(5)").click(function () {
+            //        alert("deleted");
+            //    });
+            //});
+
     </script>
 
 
 
-    <meta name="viewport" content="width=device-width" />
+    @*<meta name="viewport" content="width=device-width" />*@
     <title>display</title>
 </head>
 <body>
@@ -72,7 +78,8 @@
             <div class="col-sm-10" >
                 <table class='table table-responsive' id="MyTable">
                     <thead>
-                        <tr><th>Sr.No</th><th>Name</th><th>Mobile</th><th>Email</th><th>DOB</th><th>EDIT</th><th>DELETE</th><th>
+                        <tr><th>Sr.No</th><th>Name</th><th>Mobile</th><th>Email</th><th>DOB</th><th>DELETE</th><th>EDIT</th><th>
+                        </tr>
                     </thead>
                     <tbody id="dd">
 

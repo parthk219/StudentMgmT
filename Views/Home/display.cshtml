@@ -1,26 +1,17 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
-
-
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <!-- Latest compiled and minified CSS -->
+    <meta name="viewport" content="width=device-width" />
+    <title>Display</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-    <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  @*// added for icon of edit or delete*@
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script>
         $(document).ready(function () {
@@ -29,64 +20,74 @@
                 url: "/Home/GetAllData",
                 success: function (data) {
                     var tab = "";
-                    //var tab = "<table class='table table-responsive'><tr><th>Name</th><th>Mobile</th><th>Email</th><th>DOB</th><th>EDIT</th><th>DELETE</th><th>";
                     for (var i = 0; i < data.length; i++) {
-                        //tab = tab + "<tr><td>" + (i + 1) + "</td><td>" + data[i].name + "</td><td>" + data[i].mob + "</td><td>" + data[i].name + "</td><td>" + data[i].email + "</td><td>" + data[i].dob + "</td><td><span class='fa fa-trash spd' style='color:red;font-size:22px'></span></td><td><span class='fa fa-edit spd' style='color:red;font-size:22px'></span></td></tr>"  /*spd class to edit or delete*/
-                        tab = tab + "<tr><td>" + (i + 1) + "</td><td>" + data[i].name + "</td><td>" + data[i].mob + "</td><td>" + data[i].email + "</td><td>" + data[i].dob + "</td><td><span class='fa fa-trash spd' style='color:red;font-size:22px'></span></td><td><span class='fa fa-edit spd' style='color:red;font-size:22px'></span></td></tr>"  /*spd class to edit or delete*/
-
+                        tab += "<tr>";
+                        tab += "<td>" + (i + 1) + "</td>";
+                        tab += "<td>" + data[i].name + "</td>";
+                        tab += "<td>" + data[i].mob + "</td>";
+                        tab += "<td>" + data[i].email + "</td>";
+                        tab += "<td>" + data[i].dob + "</td>";
+                        tab += "<td><span class='fa fa-trash spd' style='color:red;font-size:22px'></span></td>";
+                        tab += "<td><span class='fa fa-edit spd' style='color:green;font-size:22px'></span></td>";
+                        tab += "</tr>";
                     }
-
-                    //tab = tab + "</table>";
-
                     $('#dd').html(tab);
-
                 },
                 error: function () {
                     alert("Something went wrong");
                 }
             });
-            //click event of table
-            $("#myTable").on("click", ".spd", function () {
-                //get current row
+
+            $("#MyTable").on("click", ".fa-trash", function () {
                 var cRow = $(this).closest("tr");
-                cRow.find("td:eq(5)").click(function () {
-                    alert("deleted")
-                })
+                var name = cRow.find("td:eq(1)").text(); // Assuming name is in the second column
+
+                if (confirm("Are you sure you want to delete " + name + "?")) {
+                    // Perform the delete operation here
+                    alert("Deleted");
+                }
             });
 
+            $("#MyTable").on("click", ".fa-edit", function () {
+                var cRow = $(this).closest("tr");
+                var name = cRow.find("td:eq(1)").text(); // Assuming name is in the second column
+
+                // Use the confirm function to show a popup
+                var confirmEdit = confirm("Are you sure you want to edit " + name + "?");
+
+                if (confirmEdit) {
+                    // If the user confirms, perform the edit operation here
+                    // Add your edit logic here, for example, opening an edit form
+                    alert("Editing " + name); // Replace this with your actual edit logic
+                }
+            });
         });
-            //$("#myTable").on("click", ".spd", function () {
-            //    // Get current row
-            //    var cRow = $(this).closest("tr");
-            //    // Now you can perform operations on the current row
-            //    cRow.find("td:eq(5)").click(function () {
-            //        alert("deleted");
-            //    });
-            //});
-
     </script>
-
-
-
-    @*<meta name="viewport" content="width=device-width" />*@
-    <title>display</title>
 </head>
+
 <body>
     <div class="container">
         <div class="row">
             <div class="col-sm-1"></div>
-            <div class="col-sm-10" >
+            <div class="col-sm-10">
                 <table class='table table-responsive' id="MyTable">
                     <thead>
-                        <tr><th>Sr.No</th><th>Name</th><th>Mobile</th><th>Email</th><th>DOB</th><th>DELETE</th><th>EDIT</th><th>
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>DOB</th>
+                            <th>DELETE</th>
+                            <th>EDIT</th>
                         </tr>
                     </thead>
-                    <tbody id="dd">
-
-                    </tbody>
-                </table>     
-                    </div>
+                    <tbody id="dd"></tbody>
+                </table>
+            </div>
+            <div class="col-sm-1"></div>
         </div>
     </div>
 </body>
+
 </html>

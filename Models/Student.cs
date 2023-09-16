@@ -7,6 +7,8 @@ namespace StudentMGMT.Models
 {
     public class Student
     {
+
+        public int rid { get; set; }
         public string name { get; set; }
         public string mob { get; set; }
         public string email { get; set; }

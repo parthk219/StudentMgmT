@@ -80,6 +80,7 @@ namespace StudentMGMT.Controllers
             {
                 lst.Add(new Student
                 {
+                    rid = dr["Id"].ToString(),
                     name = dr["name"].ToString(),
                     mob = dr["mob"].ToString(),
                     email = dr["email"].ToString(),
@@ -106,6 +107,48 @@ namespace StudentMGMT.Controllers
             
 
         }
+
+        public void delete(string mobileno)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Student;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlCommand cmd = new SqlCommand("DeleteStudent", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            if (ConnectionState.Closed == con.State)
+            {
+                con.Open();
+            }
+            cmd.Parameters.Add(new SqlParameter("@Mobile", SqlDbType.NVarChar, 15));
+            cmd.Parameters["@Mobile"].Value = mobileno;
+            SqlDataReader dr = cmd.ExecuteReader();
+
+
+
+        }
+
+        //public void EditStudent(string mob, string name, string email, string dob)
+        //{
+        [HttpPost]
+        public void EditStudent(string rid,string name, string mob, string email, string dob)
+        { 
+            using (SqlConnection connection = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Student;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("UpdateData", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Mob", mob);
+                    command.Parameters.AddWithValue("@Name", name);
+                    command.Parameters.AddWithValue("@Email", email);
+                    command.Parameters.AddWithValue("@DOB", dob);
+                    command.Parameters.AddWithValue("@rid", rid);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

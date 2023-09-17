@@ -15,6 +15,109 @@
 
     <script>
         $(document).ready(function () {
+
+            // Event delegation for dynamic elements
+            $('body').on('click', '#MyTable .fa-trash', function () {
+                var cRow = $(this).closest("tr");
+                var name = cRow.find("td:eq(1)").text();
+                var mobileNumber = cRow.find("td:eq(2)").text();
+                if (confirm("Are you sure you want to delete " + name + "?")) {
+                    $.ajax({
+                        url: "/Home/delete",
+                        type: "POST",
+                        data: { mobileno: mobileNumber },
+                        success: function (response) {
+                            alert("Deleted");
+                            location.reload();
+                        }
+                    });
+                }
+            });
+
+            $('body').on('click', '#MyTable .fa-edit', function () {
+                var cRow = $(this).closest("tr");
+                var rid = cRow.find("td:eq(0)").text(); // Assuming rid is in the first column
+
+                // Create a modal dialog
+                var modal =
+                    `<div id="editModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Edit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="editName">Name:</label>
+                            <input type="text" class="form-control" id="editName" placeholder="Enter new name">
+                        </div>
+                        <div class="form-group">
+                            <label for="editMob">Mobile:</label>
+                            <input type="text" class="form-control" id="editMob" placeholder="Enter new mobile">
+                        </div>
+                        <div class="form-group">
+                            <label for="editEmail">Email:</label>
+                            <input type="text" class="form-control" id="editEmail" placeholder="Enter new email">
+                        </div>
+                        <div class="form-group">
+                            <label for="editDOB">DOB:</label>
+                            <input type="date" class="form-control" id="editDOB" placeholder="Enter new DOB">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="saveChanges">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+                // Append modal to body
+                $('body').append(modal);
+
+                // Show modal
+                $('#editModal').modal('show');
+
+                // Define a function to handle saving changes
+                $('#saveChanges').click(function () {
+                    var newName = $('#editName').val();
+                    var newMob = $('#editMob').val();
+                    var newEmail = $('#editEmail').val();
+                    var newDOB = $('#editDOB').val();
+
+                    var dataToSend = {
+                        rid: rid,
+                        name: newName,
+                        mob: newMob,
+                        email: newEmail,
+                        dob: newDOB
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/EditStudent",
+                        data: dataToSend, // Sending data as an object, not stringifying
+                        success: function (response) {
+                            alert("Edit successful: " + response);
+                            location.reload();
+                        },
+                        error: function (error) {
+                            console.error("Error editing: " + error);
+                        }
+                    });
+
+                    // Close the modal after saving changes
+                    $('#editModal').modal('hide');
+                });
+
+                // Cleanup modal when it's closed
+                $('#editModal').on('hidden.bs.modal', function () {
+                    $(this).remove();
+                });
+            });
+
+            // Perform the initial AJAX call
             $.ajax({
                 type: "POST",
                 url: "/Home/GetAllData",
@@ -22,7 +125,7 @@
                     var tab = "";
                     for (var i = 0; i < data.length; i++) {
                         tab += "<tr>";
-                        tab += "<td>" + (i + 1) + "</td>";
+                        tab += "<td>" + data[i].rid + "</td>";
                         tab += "<td>" + data[i].name + "</td>";
                         tab += "<td>" + data[i].mob + "</td>";
                         tab += "<td>" + data[i].email + "</td>";
@@ -38,29 +141,6 @@
                 }
             });
 
-            $("#MyTable").on("click", ".fa-trash", function () {
-                var cRow = $(this).closest("tr");
-                var name = cRow.find("td:eq(1)").text(); // Assuming name is in the second column
-
-                if (confirm("Are you sure you want to delete " + name + "?")) {
-                    // Perform the delete operation here
-                    alert("Deleted");
-                }
-            });
-
-            $("#MyTable").on("click", ".fa-edit", function () {
-                var cRow = $(this).closest("tr");
-                var name = cRow.find("td:eq(1)").text(); // Assuming name is in the second column
-
-                // Use the confirm function to show a popup
-                var confirmEdit = confirm("Are you sure you want to edit " + name + "?");
-
-                if (confirmEdit) {
-                    // If the user confirms, perform the edit operation here
-                    // Add your edit logic here, for example, opening an edit form
-                    alert("Editing " + name); // Replace this with your actual edit logic
-                }
-            });
         });
     </script>
 </head>
@@ -86,8 +166,5 @@
                 </table>
             </div>
             <div class="col-sm-1"></div>
-        </div>
-    </div>
-</body>
 
-</html>
+</body>

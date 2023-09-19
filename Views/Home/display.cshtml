@@ -16,7 +16,6 @@
     <script>
         $(document).ready(function () {
 
-            // Event delegation for dynamic elements
             $('body').on('click', '#MyTable .fa-trash', function () {
                 var cRow = $(this).closest("tr");
                 var name = cRow.find("td:eq(1)").text();

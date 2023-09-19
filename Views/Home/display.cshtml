@@ -35,7 +35,7 @@
 
             $('body').on('click', '#MyTable .fa-edit', function () {
                 var cRow = $(this).closest("tr");
-                var rid = cRow.find("td:eq(0)").text(); // Assuming rid is in the first column
+                var rid = cRow.find("td:eq(0)").text(); // rid = 1st colmn
 
                 // Create a modal dialog
                 var modal =
